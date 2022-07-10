@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import App from "./App";
 import "./index.css";
-import DarkModeProvider from "./app/context/DarkModeProvider";
+import DarkModeProvider from "./context/DarkModeProvider";
 
 const container = document.getElementById("root");
 const root = createRoot(container);

@@ -6,6 +6,9 @@ module.exports = {
       fontFamily:{
         italianno: ['Italianno', "cursive"],
       },
+      colors:{
+        goldenBrown: "#B5986D"
+      }
       
     },
   },

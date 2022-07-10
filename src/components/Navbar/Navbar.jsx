@@ -8,7 +8,7 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { motion, AnimatePresence } from "framer-motion";
 import { SideMenuVariant, UserVariant } from "./Variants";
 import DarkModeOutlined from "@mui/icons-material/DarkModeOutlined";
-import { DarkModeContext } from "../../app/context/DarkModeProvider";
+import { DarkModeContext } from "../../context/DarkModeProvider";
 
 const Navbar = () => {
 	//Retrieving the context for darkMode
@@ -35,10 +35,10 @@ const Navbar = () => {
 
 	//Function to change color
 	const toggleColor = () => {
-		if (color == `white`) {
+		if (color == `[#B5986D]`) {
 			setColor(`gray-900`);
 		} else {
-			setColor(`white`);
+			setColor(`[#B5986D]`);
 		}
 	};
 
@@ -54,7 +54,10 @@ const Navbar = () => {
 				{/* Start of desktop navbar */}
 				<div className="desktop md:flex justify-between lg:mx-20 mx-4 mt-2 items-center hidden">
 					{/* Dark Mode button */}
-					<div className="dark-mode md:block hidden" onClick={toggleChange}>
+					<div
+						className="dark-mode md:block hidden mr-16"
+						onClick={toggleChange}
+					>
 						<div
 							className={`w-11 rounded-3xl h-5 shadow-inner shadow-gray-500/80 flex justify-around items-center cursor-pointer ${
 								darkMode
@@ -68,7 +71,7 @@ const Navbar = () => {
 								} z-50 transition-all`}
 							></div>
 							<div className="darkmode-icons flex items-center justify-around mx-6">
-								<div className="darkmode-icon scale-75 text-gray-800 font-bold">
+								<div className="darkmode-icon scale-75 text-[#B5986D] font-bold">
 									<DarkModeOutlined />
 								</div>
 								<div className="darkmode-icon scale-75 text-yellow-300 font-bold">
@@ -91,12 +94,12 @@ const Navbar = () => {
 						<div className="nav-link">Contact</div>
 					</div>
 					{/* User and cart button */}
-					<div className="user-info md:flex xl:gap-16 md:gap-10 items-center hidden">
+					<div className="user-info md:flex xl:gap-12 md:gap-10 items-center hidden">
 						<div className={`user cursor-pointer relative`}>
 							<div
 								className={`user-avatar rounded-full border-2 border-${color} p-1 shadow-sm shadow-black hover:shadow-md hover:shadow-black 
-								${darkMode ? `hover:bg-white` : `hover:bg-gray-500`}
-								${color === `white` ? `hover:text-gray-900` : `hover:text-white`}
+								${darkMode ? `hover:bg-white` : `hover:bg-gray-300`}
+								
 								text-${color}`}
 								onClick={handleUserClick}
 							>
@@ -138,14 +141,19 @@ const Navbar = () => {
 								)}
 							</AnimatePresence>
 						</div>
-						<div className="cart-item cursor-pointer">
+						<div className="cart-item cursor-pointer relative">
 							<div
 								className={`user-avatar rounded-full border-2 border-${color} p-1 shadow-sm shadow-black hover:shadow-md hover:shadow-black 
-								${darkMode ? `hover:bg-white` : `hover:bg-gray-500`}
-								${color === `white` ? `hover:text-gray-900` : `hover:text-white`}
+								${darkMode ? `hover:bg-white` : `hover:bg-gray-300`}
+								
 								text-${color}`}
 							>
 								<ShoppingCartIcon />
+								<div
+									className={`badge w-4 h-4 border-2 border-${color} absolute rounded-full top-1 left-5 text-xs flex items-center justify-center bg-red-500  text-white`}
+								>
+									5
+								</div>
 							</div>
 						</div>
 					</div>
