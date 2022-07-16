@@ -77,9 +77,11 @@ export const ImageVariant = {
 export const MobileContentVariant = {
 	initial: {
 		x: "-10vw",
+		opacity: 0,
 	},
 	animate: {
 		x: 0,
+		opacity: 1,
 		transition: {
 			staggerChildren: 0.25,
 			type: "spring",
@@ -91,9 +93,11 @@ export const MobileContentVariant = {
 export const MobileContentChildVariant = {
 	initial: {
 		x: "-10vw",
+		opacity: 0,
 	},
 	animate: {
 		x: 0,
+		opacity: 1,
 		transition: {
 			duration: 0.75,
 			type: "spring",

@@ -1,10 +1,13 @@
-import React, { createContext, useContext, useEffect } from "react";
+import React, {  useContext,  } from "react";
 import { DarkModeContext } from "./context/DarkModeProvider";
 import Home from "./components/Home/Home"; 
 import Navbar from "./components/Navbar/Navbar";
 import SignUpModal from "./components/Account/SignUpModal";
 import { useDispatch, useSelector } from "react-redux";
 import LoginModal from "./components/Account/LoginModal";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/config";
+import { setUser } from "./features/UserSlice";
 
 function App() {
 	const { SignUp, Login } = useSelector((state) => state.modal);
@@ -12,7 +15,10 @@ function App() {
 	
 
 	const dispatch = useDispatch();
-	const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
+
+	onAuthStateChanged(auth, (user)=>user?dispatch(setUser(user)):"")
+
+	const { darkMode } = useContext(DarkModeContext);
 
 	if (darkMode == true) {
 		document.body.style.backgroundColor = "#172030";
@@ -22,7 +28,7 @@ function App() {
 
 	return (
 		<>
-			<div className={`relative ${SignUp||Login?"blur-md":""} `}>
+			<div className={`relative ${SignUp||Login?"blur-2xl":""} `}>
 				<div className="relative navbar z-50">
 					<Navbar />
 				</div>

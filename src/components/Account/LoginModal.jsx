@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { Button, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,10 +26,15 @@ const LoginModal = () => {
 
 	const { user, loading, error } = useSelector((state) => state.user);
 
+	useEffect(() => {
+		dispatch(clearError());
+	}, []);
+
 	const dispatch = useDispatch();
 
 	const handleSignIn = (e) => {
 		e.preventDefault();
+
 		dispatch(userSignIn({ email, password }));
 	};
 

@@ -87,6 +87,9 @@ const userSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
+		setUser: (state, action) => {
+			state.user = action.payload;
+		},
 		clearError: (state) => {
 			state.error = null;
 		},
@@ -98,9 +101,9 @@ const userSlice = createSlice({
 		builder
 			//user sign up successful
 			.addCase(userSignUp.fulfilled, (state, action) => {
-				console.log(action.payload.data());
 				state.user = action.payload.data();
 				state.loading = false;
+				state.error = false;
 			})
 
 			//user sign up pending
@@ -111,7 +114,6 @@ const userSlice = createSlice({
 
 			//user sign in successful
 			.addCase(userSignIn.fulfilled, (state, action) => {
-				console.log(action.payload.data());
 				state.loading = false;
 				state.user = { ...action.payload.data() };
 				state.error = null;
@@ -142,10 +144,9 @@ const userSlice = createSlice({
 
 			//user sing in failed
 			.addCase(userSignIn.rejected, (state, action) => {
-				console.log("rejected");
 				state.user = null;
 				state.loading = false;
-				state.error = { message: "Wrong Credentials" };
+				state.error = action.error;
 			})
 
 			//user sign out failed
@@ -157,4 +158,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { clearError } = userSlice.actions;
+export const { clearError, setUser } = userSlice.actions;
