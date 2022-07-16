@@ -1,5 +1,11 @@
 import { collection, onSnapshot } from "firebase/firestore";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { db } from "../../firebase/config";
 import { motion } from "framer-motion";
 import {
@@ -17,39 +23,84 @@ import {
 	socialMediaChildButtons,
 } from "./Variants";
 import Foods from "./img/foods.jpeg";
+import Pasta from "./img/pasta.jpg";
+import Pizza from "./img/pizza.jpg";
+import Lasagna from "./img/lasagna.jpg";
+
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import { DarkModeContext } from "../../context/DarkModeProvider";
-import ReservationModal from "./ReservationModal";
+import { Box, Button } from "@mui/material";
 
-const LandingPage = () => {
+const Images = [
+	{
+		src: `${Foods}`,
+	},
+	{
+		src: `${Pasta}`,
+	},
+	{
+		src: `${Pizza}`,
+	},
+	{
+		src: `${Lasagna}`,
+	},
+];
+
+const Home = () => {
 	const { darkMode } = useContext(DarkModeContext);
 
-	const darkModeColor = (option1 = "black", option2 = `goldenBrown`) => {
-		return darkMode ? option2 : option1;
-	};
+	const [darkModeColor, setdarkModeColor] = useState();
+	const [currentSlide, setCurrentSlide] = useState(0);
+
+	useEffect(() => {
+		const interval = setInterval(
+			() =>
+				setCurrentSlide((prev) => {
+					if (prev >= Images.length - 1) {
+						prev = 0;
+						return prev;
+					}
+					return (prev += 1);
+				}),
+			3000
+		);
+
+		return () => clearInterval(interval);
+	}, []);
+
+	const toggleDarkModeColor = useCallback(
+		(option1 = "black", option2 = `goldenBrown`) => {
+			return darkMode ? option2 : option1;
+		},
+		[darkMode]
+	);
 
 	return (
-		<div className="relative">
+		<div className="mx-0">
 			{/* Desktop */}
-			<div className="desktop md:flex hidden justify-around">
+			<div className="desktop md:flex hidden justify-around ">
 				<div className="desktop-wrapper flex justify-between h-[660px]">
 					{/* Left */}
 					<motion.div
-						className="left flex-1 m-4 p-10 self-center"
+						className="left flex-1 mr-4 p-10 self-center"
 						variants={ContentVariant}
 						initial="initial"
 						animate="animate"
 					>
 						<motion.div
-							className={`text-4xl lg:text-6xl italic font-serif  self-center  text-${darkModeColor(
-								"gray-900"
+							className={`text-4xl lg:text-6xl italic font-serif  self-center  ${toggleDarkModeColor(
+								"text-gray-900",
+								"text-goldenBrown"
 							)}`}
 							variants={ContentChildVariant}
 						>
 							Meet your soulmate in our exquisite dishes!
 						</motion.div>
 						<motion.div
-							className={`text-md lg:text-lg font-serif mt-10 bg-gradient-to-r from-cyan-500 to-green-500 bg-clip-text text-${darkModeColor()}`}
+							className={`text-md lg:text-lg font-serif mt-10 bg-gradient-to-r from-cyan-500 to-green-500 bg-clip-text ${toggleDarkModeColor(
+								"text-black",
+								"text-goldenBrown"
+							)}`}
 							variants={ContentChildVariant}
 						>
 							Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
@@ -60,26 +111,29 @@ const LandingPage = () => {
 							variants={ContentChildVariant}
 						>
 							<div
-								className={`rounded-full border-2 border-${darkModeColor(
-									"green-600/90",
-									"white"
-								)}  px-4 text-${darkModeColor(
-									"green-600"
+								className={`rounded-full border-2 ${toggleDarkModeColor(
+									"border-green-600/90",
+									"border-white"
+								)}  px-4 ${toggleDarkModeColor(
+									"text-green-600",
+									"text-goldenBrown"
 								)} flex p-2   cursor-pointer hover:shadow-xl hover:shadow-gray-900/50 
-								hover:bg-${darkModeColor(
-									"green-600/100"
+								${toggleDarkModeColor(
+									"hover:bg-green-600",
+									"hover:bg-goldenBrown"
 								)} hover:text-white transition-all duration-300`}
 							>
 								Order Now
 							</div>
 							<div
 								className={`rounded-full border-2 
-								border-${darkModeColor("red-600/90", "white")} 
-								px-4 text-${darkModeColor(
-									"red-600"
-								)} flex p-2   cursor-pointer hover:shadow-xl hover:shadow-gray-900/50 hover:bg-${darkModeColor(
-									"red-600/100"
-								)} hover:text-white transition-all duration-300`}
+								${toggleDarkModeColor("border-red-600/90", "border-white")} 
+								px-4 ${toggleDarkModeColor(
+									"text-red-600",
+									"text-goldenBrown"
+								)} flex p-2   cursor-pointer hover:shadow-xl hover:shadow-gray-900/50 
+								${!darkMode ? "hover:bg-red-600" : "hover:bg-goldenBrown"}
+								 hover:text-white transition-all duration-300`}
 							>
 								Book a reservation
 							</div>
@@ -90,12 +144,12 @@ const LandingPage = () => {
 							variants={socialMediaButton}
 						>
 							<motion.div
-								className="facebook text-blue-800 scale-125 cursor-pointer rounded-full p-2 shadow-sm shadow-blue-800 hover:bg-blue-800 hover:text-white transition-all duration-300"
+								className="facebook text-blue-800 border-2 border-white scale-125 cursor-pointer rounded-full p-2 shadow-sm shadow-blue-800 hover:bg-blue-800 hover:text-white transition-all duration-300"
 								variants={socialMediaChildButtons}
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
-									classname="icon icon-tabler icon-tabler-brand-facebook "
+									className="icon icon-tabler icon-tabler-brand-facebook "
 									width="24"
 									height="24"
 									viewBox="0 0 24 24"
@@ -110,7 +164,7 @@ const LandingPage = () => {
 								</svg>
 							</motion.div>
 							<motion.div
-								className="instagram scale-125 cursor-pointer rounded-full p-2 shadow-sm shadow-violet-500 bg-gradient-to-tr from-yellow-200 via-pink-700 to-purple-600 text-purple-700 bg-clip-text hover:text-white hover:bg-clip-border transition-all duration-300"
+								className="instagram scale-125 border-2 border-white cursor-pointer rounded-full p-2 shadow-sm shadow-violet-500 bg-gradient-to-tr from-yellow-200 via-pink-700 to-purple-600 text-purple-700 bg-clip-text hover:text-white hover:bg-clip-border transition-all duration-300"
 								variants={socialMediaChildButtons}
 							>
 								<svg
@@ -132,7 +186,7 @@ const LandingPage = () => {
 								</svg>
 							</motion.div>
 							<motion.div
-								className="twitter text-blue-500 scale-125 cursor-pointer shadow-sm shadow-blue-500 rounded-full p-2 hover:bg-blue-500 hover:text-white transition-all duration-300"
+								className="twitter text-blue-400 border-2 border-white scale-125 cursor-pointer shadow-sm shadow-blue-500 rounded-full p-2 hover:bg-blue-400 hover:text-white transition-all duration-300"
 								variants={socialMediaChildButtons}
 							>
 								<svg
@@ -156,21 +210,30 @@ const LandingPage = () => {
 
 					{/* Right */}
 					<motion.div
-						className="right overflow-hidden flex-1 m-4 relative h-full flex"
+						className="right flex-1 relative h-full flex items-center justify-between gap-3"
 						variants={ImageVariant}
 						initial="initial"
 						animate="animate"
 					>
-						{/* 	<div className="absolute w-[300px] h-[300px] bg-green-300 ml-16 rounded-full"></div>
-						<div className="absolute w-[300px] h-[300px] bg-red-300 ml-16 rounded-full top-3/4 left-1/2"></div> */}
 						<div
-							className={`  relative rounded-3xl h-[80%] overflow-hidden self-center `}
+							className={`  relative rounded-3xl h-[60%] w-full  overflow-hidden self-center shadow-lg shadow-gray-900/50 scale-[110%]`}
 						>
-							<div className=" rounded-2xl overflow-hidden h-full relative">
-								<img
-									src={Foods}
-									className="image object-cover shadow-lg h-full shadow-gray-900/100"
-								/>
+							<div className={`  h-full left-0 relative flex items-center `}>
+								{Images.map((img, i) => {
+									return (
+										<div
+											className={`  top-0 left-0 absolute h-[100%] flex items-center`}
+											key={img.src}
+										>
+											<img
+												src={img.src}
+												className={`object-cover ${
+													i === currentSlide ? "opacity-1" : "opacity-0"
+												} transition w-[100%] h-[100%] duration-1000`}
+											/>
+										</div>
+									);
+								})}
 							</div>
 						</div>
 					</motion.div>
@@ -178,31 +241,45 @@ const LandingPage = () => {
 			</div>
 
 			{/* Mobile */}
-			<div className="mobile md:hidden h-full">
+			<div className="mobile md:hidden h-[60vh]">
 				<motion.div
-					className="mobile-wrapper flex justify-center mt-12 flex-col items-center mx-6 "
+					className="mobile-wrapper flex justify-center mt-12 flex-col items-center mx-6 h-[100%]"
 					variants={MobileContentVariant}
 					initial="initial"
 					animate="animate"
 				>
 					<motion.div
-						className="img w-[100%] rounded-lg overflow-hidden  "
+						className="img w-[100%] rounded-lg overflow-hidden  shadow-lg shadow-gray-700/50 h-[40%] h-full left-0 relative flex items-center "
 						variants={MobileContentChildVariant}
 					>
-						<img src={Foods} alt="" className="object-cover" />
+						{Images.map((img, i) => {
+							return (
+								<div
+									className="top-0 left-0 absolute h-[100%] w-[100%] flex items-center"
+									key={img.src}
+								>
+									<img
+										src={img.src}
+										className={`object-cover ${
+											i === currentSlide ? "opacity-1" : "opacity-0"
+										} transition w-[100%] h-[100%] duration-1000`}
+									/>
+								</div>
+							);
+						})}
 					</motion.div>
 
 					<motion.div className="writing realtive flex flex-col mt-8 justify-center items-center text-justify">
 						<motion.div
-							className={`text-2xl italic font-serif text-center self-center text-${darkModeColor(
+							className={`text-2xl italic font-serif text-center self-center text-${toggleDarkModeColor(
 								"gray-900"
 							)}`}
 							variants={MobileContentChildVariant}
 						>
-							Meet your soulmate in our exquisite dishes!
+							Meet your soulmate in our exquisite cousine!
 						</motion.div>
 						<motion.div
-							className={`text-sm text-center font-serif mt-4 bg-gradient-to-r from-cyan-500 to-green-500 bg-clip-text text-${darkModeColor()}`}
+							className={`text-sm text-center font-serif mt-4 bg-gradient-to-r from-cyan-500 to-green-500 bg-clip-text text-${toggleDarkModeColor()}`}
 							variants={MobileContentChildVariant}
 						>
 							Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
@@ -214,25 +291,28 @@ const LandingPage = () => {
 						variants={MobileContentChildVariant}
 					>
 						<div
-							className={`rounded-full text-sm border-2 border-${darkModeColor(
-								"green-600/90",
-								"white"
-							)}  px-4 text-${darkModeColor(
-								"green-600"
+							className={`rounded-full text-sm border-2 ${toggleDarkModeColor(
+								" border-green-600/90",
+								" border-white"
+							)}  px-4 ${toggleDarkModeColor(
+								"text-green-600"
 							)} flex p-2   cursor-pointer hover:shadow-xl hover:shadow-gray-900/50 
-								hover:bg-${darkModeColor(
-									"green-600/100"
+								hover:${toggleDarkModeColor(
+									"bg-green-600/100",
+									"bg-goldenBrown"
 								)} hover:text-white transition-all duration-300`}
 						>
 							Order Now
 						</div>
 						<div
 							className={`rounded-full border-2 text-sm
-								border-${darkModeColor("red-600/90", "white")} 
-								px-4 text-${darkModeColor(
-									"red-600"
-								)} flex p-2   cursor-pointer hover:shadow-xl hover:shadow-gray-900/50 hover:bg-${darkModeColor(
-								"red-600/100"
+								${toggleDarkModeColor("border-red-600/90", " border-white")} 
+								px-4 ${toggleDarkModeColor(
+									"text-red-600",
+									"text-goldenBrown"
+								)} flex p-2   cursor-pointer hover:shadow-xl hover:shadow-gray-900/50 hover:${toggleDarkModeColor(
+								"bg-red-600/100",
+								"bg-goldenBrown"
 							)} hover:text-white transition-all duration-300`}
 						>
 							Book a reservation
@@ -250,7 +330,7 @@ const LandingPage = () => {
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
-								classname="icon icon-tabler icon-tabler-brand-facebook "
+								className="icon icon-tabler icon-tabler-brand-facebook "
 								width="24"
 								height="24"
 								viewBox="0 0 24 24"
@@ -313,4 +393,4 @@ const LandingPage = () => {
 	);
 };
 
-export default LandingPage;
+export default Home;

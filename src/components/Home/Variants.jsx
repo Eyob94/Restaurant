@@ -1,25 +1,29 @@
 export const ContentVariant = {
 	initial: {
-		x: "-60vw",
+		x: "-10vw",
+		opacity: 0,
 	},
 	animate: {
 		x: 0,
+		opacity: 1,
 		transition: {
-			staggerChildren: 0.5,
-			delayChildren: 0.5,
+			duration: 1,
+			staggerChildren: 0.45,
 		},
 	},
 };
 
 export const ContentChildVariant = {
 	initial: {
-		x: "-60vw",
+		x: "-10vw",
+		opacity: 0,
 	},
 	animate: {
 		x: 0,
+		opacity: 1,
 		transition: {
 			type: "spring",
-			bounce: 0.5,
+			bounce: 0.25,
 		},
 	},
 };
@@ -34,10 +38,10 @@ export const socialMediaButton = {
 		opacity: 1,
 		transition: {
 			delay: 1,
-			staggerChildren: 0.5,
+			staggerChildren: 0.15,
 			type: "spring",
-			bounce: 1,
-			stiffness: 1000,
+			bounce: 0.25,
+			stiffness: 50,
 		},
 	},
 };
@@ -55,22 +59,24 @@ export const socialMediaChildButtons = {
 
 export const ImageVariant = {
 	initial: {
-		scale: 0,
+		scale: 0.75,
+		opacity: 0,
 	},
 	animate: {
 		scale: 1,
+		opacity: 1,
 		transition: {
-			delay: 3.5,
+			delay: 2,
 			type: "spring",
-			duration: 2,
-			bounce: 0.5,
+			duration: 1.5,
+			bounce: 0.25,
 		},
 	},
 };
 
 export const MobileContentVariant = {
 	initial: {
-		x: "-110vw",
+		x: "-10vw",
 	},
 	animate: {
 		x: 0,
@@ -84,7 +90,7 @@ export const MobileContentVariant = {
 
 export const MobileContentChildVariant = {
 	initial: {
-		x: "-110vw",
+		x: "-10vw",
 	},
 	animate: {
 		x: 0,
@@ -105,7 +111,7 @@ export const MobileSocialMediaVariant = {
 		opacity: 1,
 		transition: {
 			delay: 1,
-			staggerChildren: 0.5,
+			staggerChildren: 0.15,
 			type: "spring",
 			bounce: 1,
 			stiffness: 50,

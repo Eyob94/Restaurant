@@ -41,5 +41,6 @@
 }
 
  body {
-  overflow: auto;
+  overflow-x: hidden;
+  width: 100vw;
 }

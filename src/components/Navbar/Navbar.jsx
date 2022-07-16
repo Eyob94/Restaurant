@@ -9,8 +9,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SideMenuVariant, UserVariant } from "./Variants";
 import DarkModeOutlined from "@mui/icons-material/DarkModeOutlined";
 import { DarkModeContext } from "../../context/DarkModeProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSignUp, toggleLogin } from "../../features/ModalSlice";
+import { Button } from "@mui/material";
+import AccountMenu from "./AccountMenu";
+import { userSignOut } from "../../features/UserSlice";
 
 const Navbar = () => {
+	const dispatch = useDispatch();
+	const { user, loading, error } = useSelector((state) => state.user);
+
 	//Retrieving the context for darkMode
 	const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
 
@@ -50,7 +58,7 @@ const Navbar = () => {
 
 	return (
 		<div className="sticky">
-			<div className="">
+			<div className="relative z-50">
 				{/* Start of desktop navbar */}
 				<div className="desktop md:flex justify-between lg:mx-20 mx-4 mt-2 items-center hidden">
 					{/* Dark Mode button */}
@@ -121,41 +129,32 @@ const Navbar = () => {
 								</svg>
 							</div>
 
-							<AnimatePresence>
-								{showOptions && (
-									<motion.div
-										className="user-options flex flex-col gap-2 divide-gray-900/80 absolute w-24 -left-4 shadow-md shadow-gray-500/80 text-sm p-3 bg-white rounded font-bold mt-2"
-										variants={UserVariant}
-										initial="initial"
-										animate="animate"
-										exit="exit"
-									>
-										<div className="option cursor-pointer hover:text-black">
-											Log in
-										</div>
-										<hr />
-										<div className="option cursor-pointer hover:text-black">
-											Sign up
-										</div>
-									</motion.div>
-								)}
-							</AnimatePresence>
+							<AccountMenu
+								showOptions={showOptions}
+								dispatch={dispatch}
+								toggleLogin={toggleLogin}
+								toggleSignUp={toggleSignUp}
+							/>
 						</div>
-						<div className="cart-item cursor-pointer relative">
-							<div
-								className={`user-avatar rounded-full border-2 border-${color} p-1 shadow-sm shadow-black hover:shadow-md hover:shadow-black 
+						{user && (
+							<div className="cart-item cursor-pointer relative">
+								<div
+									className={`user-avatar rounded-full border-2 border-${color} p-1 shadow-sm shadow-black hover:shadow-md hover:shadow-black 
 								${darkMode ? `hover:bg-white` : `hover:bg-gray-300`}
 								
 								text-${color}`}
-							>
-								<ShoppingCartIcon />
-								<div
-									className={`badge w-4 h-4 border-2 border-${color} absolute rounded-full top-1 left-5 text-xs flex items-center justify-center bg-red-500  text-white`}
 								>
-									5
+									<ShoppingCartIcon />
+									{user?.cartItems?.length > 0 && (
+										<div
+											className={`badge w-4 h-4 border-2 border-${color} absolute rounded-full top-1 left-5 text-xs flex items-center justify-center bg-red-500  text-white`}
+										>
+											{user?.cartItems?.length}
+										</div>
+									)}
 								</div>
 							</div>
-						</div>
+						)}
 					</div>
 				</div>
 				{/* 
@@ -167,7 +166,7 @@ const Navbar = () => {
 				*/}
 
 				<div
-					className={`mobile-menu flex items-center justify-between mx-3 mt-2 text-${color}`}
+					className={`mobile-menu flex items-center justify-between mx-3 mt-2 text-${color} z-50 relative`}
 				>
 					<div className="logo md:text-6xl text-5xl py-1 px-3 font-italianno md:hidden block">
 						Delizioso
@@ -182,38 +181,55 @@ const Navbar = () => {
 						<AnimatePresence>
 							{showSideMenu && (
 								<motion.div
-									className="side-menu absolute -left-32  mt-4 h-100 p-4  rounded-xl shadow-lg shadow-black/50 bg-white divide-gray-900/100 flex flex-col"
+									className="side-menu absolute -left-32  mt-4 h-100 p-4 justify-center items-center  rounded-xl shadow-lg shadow-black/50 bg-white divide-gray-900/100 flex flex-col"
 									variants={SideMenuVariant}
 									initial="initial"
 									animate="animate"
 									exit="initial"
 								>
-									<div className="side-menu-main flex flex-col gap-3 text-gray-900">
-										<div className="font-mono text-xl cursor-pointer  hover:text-black">
+									<div className="side-menu-main flex flex-col gap-2 justify-center items-center">
+										<Button className="mb-2 mr-4 text-lg cursor-pointer text-green-600   hover:text-black bg-white hover:shadow-md hover:shadow-gray-800/40">
 											Home
-										</div>
-										<div className="font-mono text-xl cursor-pointer  hover:text-black">
-											Reservation
-										</div>
-										<div className="font-mono text-xl cursor-pointer hover:text-black">
+										</Button>
+
+										<Button className="mb-2 mr-4 text-lg cursor-pointer text-green-600   hover:text-black bg-white hover:shadow-md hover:shadow-gray-800/40">
 											Menu
-										</div>
-										<div className="font-mono text-xl cursor-pointer  hover:text-black">
+										</Button>
+										<Button className="mb-2 mr-4 text-lg cursor-pointer text-green-600  hover:text-black bg-white hover:shadow-md hover:shadow-gray-800/40">
 											About
-										</div>
-										<div className="font-mono text-xl cursor-pointer  hover:text-black">
+										</Button>
+										<Button className="mb-2 mr-4 text-lg cursor-pointer text-green-600    hover:text-black bg-white hover:shadow-md hover:shadow-gray-800/40">
 											Contact
-										</div>
+										</Button>
 									</div>
 									<hr />
-									<div className="side-menu-user mt-5 flex flex-col gap-3 text-lg text-red-700">
-										<div className="option font-serif cursor-pointer hover:text-black">
-											Log in
-										</div>
+									<div className="side-menu-user mt-5 flex flex-col gap-3 text-lg text-green-700">
+										{!user ? (
+											<>
+												<div
+													className="option font-serif cursor-pointer hover:text-black"
+													onClick={() => dispatch(toggleLogin())}
+												>
+													Log in
+												</div>
 
-										<div className="option font-serif cursor-pointer hover:text-black">
-											Sign up
-										</div>
+												<div
+													className="option font-serif cursor-pointer hover:text-black"
+													onClick={() => dispatch(toggleSignUp())}
+												>
+													Sign up
+												</div>
+											</>
+										) : (
+											<>
+												<div
+													className="option font-serif cursor-pointer hover:text-black"
+													onClick={() => dispatch(userSignOut())}
+												>
+													Sign Out
+												</div>
+											</>
+										)}
 									</div>
 									<div
 										className="dark-mode mt-10 mx-auto"
