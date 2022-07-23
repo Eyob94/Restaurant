@@ -14,7 +14,7 @@ const AccountMenu = ({ showOptions, dispatch, toggleLogin, toggleSignUp }) => {
 		<>
 			{showOptions && (
 				<motion.div
-					className="user-options flex flex-col gap-2 border-2 justify-center items-center border-green-600/80 divide-gray-900/80 absolute w-28 -left-4 shadow-lg shadow-gray-600/80 text-sm p-3 bg-white rounded font-bold mt-2"
+					className="user-options flex flex-col gap-2 border-2 justify-center items-center border-green-600/80 divide-gray-900/80 absolute w-28 -left-10 shadow-lg shadow-gray-600/80 text-sm p-3 bg-white rounded font-bold mt-2"
 					variants={UserVariant}
 					initial="initial"
 					animate="animate"

@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { NavLink } from "react-router-dom";
+
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { SideMenuVariant, UserVariant } from "./Variants";
 import DarkModeOutlined from "@mui/icons-material/DarkModeOutlined";
@@ -60,7 +61,7 @@ const Navbar = () => {
 		<div className="sticky">
 			<div className="relative z-50">
 				{/* Start of desktop navbar */}
-				<div className="desktop md:flex justify-between lg:mx-20 mx-4 mt-2 items-center hidden">
+				<div className="desktop md:flex justify-between lg:mx-20 mx-4 mt-2 items-center hidden ">
 					{/* Dark Mode button */}
 					<div
 						className="dark-mode md:block hidden mr-16"
@@ -92,14 +93,22 @@ const Navbar = () => {
 					<div
 						className={`nav-lists md:flex xl:gap-24 md:gap-12 self-center hidden mx-auto text-${color}`}
 					>
-						<div className={`nav-link `}>Home</div>
-						<div className="nav-link">Menu</div>
+						<div className={`nav-link flex items-center `}>
+							<NavLink to="/">Home</NavLink>
+						</div>
+						<div className={`nav-link flex items-center`}>
+							<NavLink to="/menu">Menu</NavLink>
+						</div>
 
 						<div className="logo md:text-6xl text-5xl py-1 px-3 font-italianno transition-all">
 							Delizioso
 						</div>
-						<div className="nav-link">About</div>
-						<div className="nav-link">Contact</div>
+						<div className={`nav-link flex items-center`}>
+							<NavLink to="/about">About</NavLink>
+						</div>
+						<div className={`nav-link flex items-center`}>
+							<NavLink to="/contact">Contact</NavLink>
+						</div>
 					</div>
 					{/* User and cart button */}
 					<div className="user-info md:flex xl:gap-12 md:gap-10 items-center hidden">

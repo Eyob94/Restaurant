@@ -66,7 +66,7 @@ export const ImageVariant = {
 		scale: 1,
 		opacity: 1,
 		transition: {
-			delay: 2,
+			delay: 1,
 			type: "spring",
 			duration: 1.5,
 			bounce: 0.25,

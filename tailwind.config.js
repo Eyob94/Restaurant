@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       fontFamily:{
         italianno: ['Italianno', "cursive"],
+        curs: ['Courgette', "cursive"]
       },
       colors:{
         goldenBrown: "#B5986D"
